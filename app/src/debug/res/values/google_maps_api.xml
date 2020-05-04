@@ -1,0 +1,24 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=9A:DE:02:0B:AD:3C:DF:E1:45:E9:86:B6:3F:D0:A7:6C:F5:F8:F0:BE%3Bcom.teerat.parent_map
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    com.teerat.parent_map
+
+    SHA-1 certificate fingerprint:
+    9A:DE:02:0B:AD:3C:DF:E1:45:E9:86:B6:3F:D0:A7:6C:F5:F8:F0:BE
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyANLg1ygF1Ke5m4HDK3nuA_ujqaj6QNg-4</string>
+</resources>
