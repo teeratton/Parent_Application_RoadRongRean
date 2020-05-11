@@ -56,12 +56,16 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    date_textView.setText(date + "checked");
                     String schedule = date +"|MORNING";
-                    updateSchedule(schedule);
+                    Boolean check = Boolean.TRUE;
+                    updateSchedule(schedule,check);
 
                 } else {
-                    date_textView.setText(date + "not check");
+                    String schedule = date +"|MORNING";
+                    Boolean check = Boolean.FALSE;
+                    updateSchedule(schedule,check);
+
+
                 }
             }
         });
@@ -70,16 +74,23 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    date_textView.setText(date + "checked");
+                    String schedule = date +"|AFTERNOON";
+                    Boolean check = Boolean.TRUE;
+                    updateSchedule(schedule,check);
 
                 } else {
-                    date_textView.setText(date + "not check");
+                    String schedule = date +"|AFTERNOON";
+                    Boolean check = Boolean.FALSE;
+                    updateSchedule(schedule,check);
                 }
             }
         });
 
     }
-    private void updateSchedule(String schedule){
+    private void updateSchedule(String schedule,Boolean check){
+        if (check) {
         studentRef.document("1").update("Absent", FieldValue.arrayUnion(schedule));
-    }
+    } else {
+            studentRef.document("1").update("Absent", FieldValue.arrayRemove(schedule));
+        }}
 }
