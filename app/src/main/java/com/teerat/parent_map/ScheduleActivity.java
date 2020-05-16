@@ -12,10 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.CollectionReference;
+
+import java.util.List;
 
 
 public class ScheduleActivity extends AppCompatActivity {
@@ -27,7 +32,7 @@ public class ScheduleActivity extends AppCompatActivity {
     private String date;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference studentRef = db.collection("student");
-
+    private DocumentReference document = studentRef.document("1");
 
 
 
@@ -49,6 +54,43 @@ public class ScheduleActivity extends AppCompatActivity {
                 date = dayOfMonth + "-" + (month+1) + "-" + year;
                 Log.d("test", date);
                 date_textView.setText(date);
+
+                document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot document = task.getResult();
+                        List<String> absent = (List<String>) document.get("Absent");
+                        Boolean morningFound = false;
+                        Boolean afternoonFound = false;
+
+
+                        for(String item : absent){
+                            Log.d("myTag", item);
+                            String[] datenTime = item.split(",");
+                            String newDate = datenTime[0];
+                            String time = datenTime[1];
+                            Log.d("newDate", newDate);
+                            Log.d("time", time);
+
+                            if(date.equals(newDate)){
+                                if(time.equals("MORNING")){
+                                    morningFound = true;
+                                    morning_switch.setChecked(true);
+                                }
+                                else {
+                                    afternoonFound = true;
+                                    afternoon_switch.setChecked(true);
+                                }
+                            }
+                        }
+                        if(!morningFound){
+                            morning_switch.setChecked(false);
+                        }
+                        if(!afternoonFound){
+                            afternoon_switch.setChecked(false);
+                        }
+                    }
+                });
             }
         });
 
@@ -56,12 +98,12 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    String schedule = date +"|MORNING";
+                    String schedule = date +",MORNING";
                     Boolean check = Boolean.TRUE;
                     updateSchedule(schedule,check);
 
                 } else {
-                    String schedule = date +"|MORNING";
+                    String schedule = date +",MORNING";
                     Boolean check = Boolean.FALSE;
                     updateSchedule(schedule,check);
 
@@ -74,12 +116,12 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    String schedule = date +"|AFTERNOON";
+                    String schedule = date +",AFTERNOON";
                     Boolean check = Boolean.TRUE;
                     updateSchedule(schedule,check);
 
                 } else {
-                    String schedule = date +"|AFTERNOON";
+                    String schedule = date +",AFTERNOON";
                     Boolean check = Boolean.FALSE;
                     updateSchedule(schedule,check);
                 }
