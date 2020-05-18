@@ -47,44 +47,44 @@ public class NotificationActivity extends AppCompatActivity {
 
                     Map<String, Object> t = documentSnapshot.getData();
                     System.out.println(t);
-                    try{
-                        Map<String, Object> leaveHome =(java.util.Map<String, Object>) t.get("LEAVEHOME");
+                    try {
+                        Map<String, Object> leaveHome = (java.util.Map<String, Object>) t.get("LEAVEHOME");
                         location = (GeoPoint) leaveHome.get("LOCATION");
                         time = (String) leaveHome.get("TIME");
-                        if(!bLeaveHome){
-                            updateNotification("Leave the home",time,location);
+                        if (!bLeaveHome) {
+                            updateNotification("Leave the home", time, location);
                         }
-                    }catch (Exception a){
+                    } catch (Exception a) {
                         System.out.println("S");
                     }
-                    try{
-                        Map<String, Object> arriveSchool =(java.util.Map<String, Object>) t.get("ARRIVESCHOOL");
+                    try {
+                        Map<String, Object> arriveSchool = (java.util.Map<String, Object>) t.get("ARRIVESCHOOL");
                         location = (GeoPoint) arriveSchool.get("LOCATION");
                         time = (String) arriveSchool.get("TIME");
-                        if(!bArriveSchool){
-                            updateNotification("Arrive at school",time,location);
+                        if (!bArriveSchool) {
+                            updateNotification("Arrive at school", time, location);
                         }
-                    }catch (Exception a){
+                    } catch (Exception a) {
                         System.out.println("S");
                     }
-                    try{
-                        Map<String, Object> leaveSchool =(java.util.Map<String, Object>) t.get("LEAVESCHOOL");
+                    try {
+                        Map<String, Object> leaveSchool = (java.util.Map<String, Object>) t.get("LEAVESCHOOL");
                         location = (GeoPoint) leaveSchool.get("LOCATION");
                         time = (String) leaveSchool.get("TIME");
-                        if(!bLeaveSchool){
-                            updateNotification("Leave the school",time,location);
+                        if (!bLeaveSchool) {
+                            updateNotification("Leave the school", time, location);
                         }
-                    }catch (Exception a){
+                    } catch (Exception a) {
                         System.out.println("S");
                     }
-                    try{
-                        Map<String, Object> arriveHome =(java.util.Map<String, Object>) t.get("ARRIVEHOME");
+                    try {
+                        Map<String, Object> arriveHome = (java.util.Map<String, Object>) t.get("ARRIVEHOME");
                         location = (GeoPoint) arriveHome.get("LOCATION");
                         time = (String) arriveHome.get("TIME");
-                        if(!bArriveHome){
-                            updateNotification("Arrived home",time,location);
+                        if (!bArriveHome) {
+                            updateNotification("Arrived home", time, location);
                         }
-                    }catch (Exception a){
+                    } catch (Exception a) {
                         System.out.println("S");
                     }
 
@@ -103,37 +103,35 @@ public class NotificationActivity extends AppCompatActivity {
         notificationArea = (LinearLayout) findViewById(R.id.notificationArea);
         getDate();
 
-
-
-
     }
 
-    private void updateNotification(String state,String time, GeoPoint location){
+    private void updateNotification(String state, String time, GeoPoint location) {
 
         TextView textView = new TextView(this);
         textView.setText(state + " : " + time);
         notificationArea.addView(textView);
-        if(state.equals("Leave the home")){
+        if (state.equals("Leave the home")) {
             bLeaveHome = true;
         }
-        if(state.equals("Arrive at school")){
+        if (state.equals("Arrive at school")) {
             bArriveSchool = true;
         }
-        if(state.equals("Leave the school")){
+        if (state.equals("Leave the school")) {
             bLeaveSchool = true;
         }
-        if(state.equals("Arrived home")){
+        if (state.equals("Arrived home")) {
             bArriveHome = true;
         }
 
     }
-    private void getDate(){
+
+    private void getDate() {
         Date c = Calendar.getInstance().getTime();
         String date = df.format(c);
         TextView textView = new TextView(this);
         textView.setText(date);
         notificationArea.addView(textView);
-        mDocRef = FirebaseFirestore.getInstance().document("student/2/Event/"+date);
+        mDocRef = FirebaseFirestore.getInstance().document("student/2/Event/" + date);
     }
 
 
