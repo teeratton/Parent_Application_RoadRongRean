@@ -147,7 +147,7 @@ public class NotificationActivity extends AppCompatActivity {
 
     private void getDate() {
         Date c = Calendar.getInstance().getTime();
-        String date = df.format(c);
+        date = df.format(c);
         TextView textView = new TextView(this);
         textView.setText(date);
         textView.setTextSize(50);
