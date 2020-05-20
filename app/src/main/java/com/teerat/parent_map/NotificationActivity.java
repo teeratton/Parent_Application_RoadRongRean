@@ -1,7 +1,11 @@
 package com.teerat.parent_map;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +37,7 @@ public class NotificationActivity extends AppCompatActivity {
     private boolean bArriveHome = false;
     private SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     private String date;
+    private Drawable logo;
 
     @Override
     protected void onStart() {
@@ -106,22 +111,37 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void updateNotification(String state, String time, GeoPoint location) {
-
-        TextView textView = new TextView(this);
-        textView.setText(state + " : " + time);
-        notificationArea.addView(textView);
         if (state.equals("Leave the home")) {
+            logo = getResources().getDrawable(R.drawable.leave_home_or_school);
             bLeaveHome = true;
         }
         if (state.equals("Arrive at school")) {
+            logo = getResources().getDrawable(R.drawable.school_logo);
             bArriveSchool = true;
         }
         if (state.equals("Leave the school")) {
+            logo = getResources().getDrawable(R.drawable.leave_home_or_school);
             bLeaveSchool = true;
         }
         if (state.equals("Arrived home")) {
+            logo = getResources().getDrawable(R.drawable.home_logo);
             bArriveHome = true;
         }
+
+        TextView textView = new TextView(this);
+        logo = resize(logo);
+        int h = logo.getIntrinsicHeight();
+        int w = logo.getIntrinsicWidth();
+        logo.setBounds( 0, 0, w, h );
+        textView.setCompoundDrawables(logo,null,null,null);
+        textView.setCompoundDrawablePadding(50);
+        textView.setText(state + " : " + time);
+        textView.setTextSize(20);
+        textView.setGravity(Gravity.CENTER);
+        textView.setPadding(0,0,0,50);
+
+        notificationArea.addView(textView);
+
 
     }
 
@@ -130,8 +150,18 @@ public class NotificationActivity extends AppCompatActivity {
         String date = df.format(c);
         TextView textView = new TextView(this);
         textView.setText(date);
+        textView.setTextSize(50);
+        textView.setPadding(0,0,0,50);
         notificationArea.addView(textView);
+
+        date = "18-05-2020";
         mDocRef = FirebaseFirestore.getInstance().document("student/2/Event/" + date);
+    }
+
+    private Drawable resize(Drawable image) {
+        Bitmap b = ((BitmapDrawable)image).getBitmap();
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 80, 80, false);
+        return new BitmapDrawable(getResources(), bitmapResized);
     }
 
 
