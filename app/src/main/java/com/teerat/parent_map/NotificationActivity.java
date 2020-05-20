@@ -1,7 +1,11 @@
 package com.teerat.parent_map;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,14 +20,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 public class NotificationActivity extends AppCompatActivity {
 
-    private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("student/2/Event/22-04-2020");
+    private DocumentReference mDocRef;
     private LinearLayout notificationArea;
     private String time;
     private GeoPoint location;
+    private boolean bArriveSchool = false;
+    private boolean bLeaveHome = false;
+    private boolean bLeaveSchool = false;
+    private boolean bArriveHome = false;
+    private SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+    private String date;
+    private Drawable logo;
 
     @Override
     protected void onStart() {
@@ -38,35 +52,53 @@ public class NotificationActivity extends AppCompatActivity {
 
                     Map<String, Object> t = documentSnapshot.getData();
                     System.out.println(t);
-                    try{
-                        Map<String, Object> arrivehome =(java.util.Map<String, Object>) t.get("a");
-                        location = (GeoPoint) arrivehome.get("LOCATION");
-                        time = (String) arrivehome.get("TIME");
-                        updateNotification(time,location);
-                        System.out.println(arrivehome);
-                    }catch (Exception a){
+                    try {
+                        Map<String, Object> leaveHome = (java.util.Map<String, Object>) t.get("LEAVEHOME");
+                        location = (GeoPoint) leaveHome.get("LOCATION");
+                        time = (String) leaveHome.get("TIME");
+                        if (!bLeaveHome) {
+                            updateNotification("Leave the home", time, location);
+                        }
+                    } catch (Exception a) {
                         System.out.println("S");
                     }
-                    /*
-                    Map<String, Object> arrivehome =(java.util.Map<String, Object>) t.get("ARRIVEHOME");
-                    location = (GeoPoint) arrivehome.get("LOCATION");
-                    time = (String) arrivehome.get("TIME");
-                    updateNotification(time,location);
-                    System.out.println(arrivehome);
-                    */
-                    /*
-                    Map<String,Object> te = (java.util.Map<String, Object>) t.get("ARRIVEHOME");
-                    location = (GeoPoint)te.get("LOCATION");
-                    time = (String)te.get("TIME");
-                    */
-                    //updateNotification(time,location);
-
+                    try {
+                        Map<String, Object> arriveSchool = (java.util.Map<String, Object>) t.get("ARRIVESCHOOL");
+                        location = (GeoPoint) arriveSchool.get("LOCATION");
+                        time = (String) arriveSchool.get("TIME");
+                        if (!bArriveSchool) {
+                            updateNotification("Arrive at school", time, location);
+                        }
+                    } catch (Exception a) {
+                        System.out.println("S");
+                    }
+                    try {
+                        Map<String, Object> leaveSchool = (java.util.Map<String, Object>) t.get("LEAVESCHOOL");
+                        location = (GeoPoint) leaveSchool.get("LOCATION");
+                        time = (String) leaveSchool.get("TIME");
+                        if (!bLeaveSchool) {
+                            updateNotification("Leave the school", time, location);
+                        }
+                    } catch (Exception a) {
+                        System.out.println("S");
+                    }
+                    try {
+                        Map<String, Object> arriveHome = (java.util.Map<String, Object>) t.get("ARRIVEHOME");
+                        location = (GeoPoint) arriveHome.get("LOCATION");
+                        time = (String) arriveHome.get("TIME");
+                        if (!bArriveHome) {
+                            updateNotification("Arrived home", time, location);
+                        }
+                    } catch (Exception a) {
+                        System.out.println("S");
+                    }
 
                 } else if (e != null) {
                     Log.w("fail", "Got an exception!", e);
                 }
             }
         });
+
     }
 
     @Override
@@ -74,17 +106,62 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actvity_notification);
         notificationArea = (LinearLayout) findViewById(R.id.notificationArea);
+        getDate();
+
+    }
+
+    private void updateNotification(String state, String time, GeoPoint location) {
+        if (state.equals("Leave the home")) {
+            logo = getResources().getDrawable(R.drawable.leave_home_or_school);
+            bLeaveHome = true;
+        }
+        if (state.equals("Arrive at school")) {
+            logo = getResources().getDrawable(R.drawable.school_logo);
+            bArriveSchool = true;
+        }
+        if (state.equals("Leave the school")) {
+            logo = getResources().getDrawable(R.drawable.leave_home_or_school);
+            bLeaveSchool = true;
+        }
+        if (state.equals("Arrived home")) {
+            logo = getResources().getDrawable(R.drawable.home_logo);
+            bArriveHome = true;
+        }
+
+        TextView textView = new TextView(this);
+        logo = resize(logo);
+        int h = logo.getIntrinsicHeight();
+        int w = logo.getIntrinsicWidth();
+        logo.setBounds( 0, 0, w, h );
+        textView.setCompoundDrawables(logo,null,null,null);
+        textView.setCompoundDrawablePadding(50);
+        textView.setText(state + " : " + time);
+        textView.setTextSize(20);
+        textView.setGravity(Gravity.CENTER);
+        textView.setPadding(0,0,0,50);
+
+        notificationArea.addView(textView);
 
 
     }
 
-    private void updateNotification(String time, GeoPoint location){
-
+    private void getDate() {
+        Date c = Calendar.getInstance().getTime();
+        date = df.format(c);
         TextView textView = new TextView(this);
-        textView.setText(time);
+        textView.setText(date);
+        textView.setTextSize(50);
+        textView.setPadding(0,0,0,50);
         notificationArea.addView(textView);
 
+        date = "18-05-2020";
+        mDocRef = FirebaseFirestore.getInstance().document("student/2/Event/" + date);
+    }
 
+    private Drawable resize(Drawable image) {
+        Bitmap b = ((BitmapDrawable)image).getBitmap();
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 80, 80, false);
+        return new BitmapDrawable(getResources(), bitmapResized);
     }
 
 
