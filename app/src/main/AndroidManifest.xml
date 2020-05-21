@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.teerat.parent_map">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -16,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".ProfileActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -38,29 +37,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".test" >
-            <!--Default Intent Filter-->
+        <activity android:name=".test">
+
+            <!-- Default Intent Filter -->
             <intent-filter>
                 <action android:name="android.intent.action.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".BusActivity">
 
-        <activity android:name=".BusActivity" >
-            <!--Default Intent Filter-->
+            <!-- Default Intent Filter -->
             <intent-filter>
                 <action android:name="android.intent.action.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".NotificationActivity">
 
-        <activity android:name=".NotificationActivity" >
-            <!--Default Intent Filter-->
+            <!-- Default Intent Filter -->
             <intent-filter>
                 <action android:name="android.intent.action.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ScheduleActivity">
 
-        <activity android:name=".ScheduleActivity" >
-            <!--Default Intent Filter-->
+            <!-- Default Intent Filter -->
             <intent-filter>
                 <action android:name="android.intent.action.DEFAULT" />
             </intent-filter>
