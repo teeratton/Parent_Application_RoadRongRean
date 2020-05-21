@@ -1,9 +1,12 @@
 package com.teerat.parent_map;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,21 +20,25 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class BusActivity extends AppCompatActivity {
+public class BusActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("Bus/001");
 
-    TextView name_textView;
-    TextView numberPlate_textView;
-    TextView speed_textView;
-    TextView distance_textView;
-    ImageView busIcon_imageView;
-    ImageView driverIcon_imageView;
+    private TextView name_textView;
+    private TextView numberPlate_textView;
+    private TextView speed_textView;
+    private TextView distance_textView;
+    private ImageView busIcon_imageView;
+    private ImageView driverIcon_imageView;
 
-    String driverName;
-    String numberPlate;
-    String speed;
-    String distancetoDes;
+    private String driverName;
+    private String numberPlate;
+    private String speed;
+    private String distancetoDes;
+
+    private Button notificationButton;
+    private Button scheduleButton;
+    private Button mapButton;
 
 
     @Override
@@ -70,6 +77,13 @@ public class BusActivity extends AppCompatActivity {
         busIcon_imageView = (ImageView) findViewById(R.id.busLogo);
         driverIcon_imageView = (ImageView) findViewById(R.id.driverLogo);
 
+        mapButton = (Button) findViewById(R.id.mapButton);
+        notificationButton = (Button) findViewById(R.id.notificationButton);
+        scheduleButton = (Button) findViewById(R.id.scheduleButton);
+        mapButton.setOnClickListener(this);
+        notificationButton.setOnClickListener(this);
+        scheduleButton.setOnClickListener(this);
+
         busIcon_imageView.setImageBitmap(resizeIcons("bus_logo", 300, 300));
         driverIcon_imageView.setImageBitmap(resizeIcons("driver_logo", 300, 300));
 
@@ -80,5 +94,21 @@ public class BusActivity extends AppCompatActivity {
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(iconName, "drawable", getPackageName()));
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         return resizedBitmap;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v == notificationButton){
+            Intent intent = new Intent(BusActivity.this,NotificationActivity.class);
+            startActivity(intent);
+        }
+        if(v == mapButton){
+            Intent intent = new Intent(BusActivity.this,MapsActivity.class);
+            startActivity(intent);
+        }
+        if(v == scheduleButton){
+            Intent intent = new Intent(BusActivity.this,ScheduleActivity.class);
+            startActivity(intent);
+        }
     }
 }
