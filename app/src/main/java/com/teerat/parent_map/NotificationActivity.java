@@ -1,11 +1,14 @@
 package com.teerat.parent_map;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DocumentReference mDocRef;
     private LinearLayout notificationArea;
@@ -36,6 +39,9 @@ public class NotificationActivity extends AppCompatActivity {
     private boolean bLeaveSchool = false;
     private boolean bArriveHome = false;
     private SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+    private Button mapButton;
+    private Button busButton;
+    private Button scheduleButton;
     private String date;
     private Drawable logo;
 
@@ -106,6 +112,12 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actvity_notification);
         notificationArea = (LinearLayout) findViewById(R.id.notificationArea);
+        mapButton = (Button) findViewById(R.id.mapButton);
+        busButton = (Button) findViewById(R.id.busButton);
+        scheduleButton = (Button) findViewById(R.id.scheduleButton);
+        mapButton.setOnClickListener(this);
+        busButton.setOnClickListener(this);
+        scheduleButton.setOnClickListener(this);
         getDate();
 
     }
@@ -164,5 +176,21 @@ public class NotificationActivity extends AppCompatActivity {
         return new BitmapDrawable(getResources(), bitmapResized);
     }
 
+
+    @Override
+    public void onClick(View v) {
+        if(v == mapButton){
+            Intent intent = new Intent(NotificationActivity.this,MapsActivity.class);
+            startActivity(intent);
+        }
+        if(v == busButton){
+            Intent intent = new Intent(NotificationActivity.this,BusActivity.class);
+            startActivity(intent);
+        }
+        if(v == scheduleButton){
+            Intent intent = new Intent(NotificationActivity.this,ScheduleActivity.class);
+            startActivity(intent);
+        }
+    }
 
 }

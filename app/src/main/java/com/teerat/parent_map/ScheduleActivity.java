@@ -1,7 +1,10 @@
 package com.teerat.parent_map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -23,12 +26,15 @@ import com.google.firebase.firestore.CollectionReference;
 import java.util.List;
 
 
-public class ScheduleActivity extends AppCompatActivity {
+public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
 
     private CalendarView calendar_view;
     private TextView date_textView;
     private Switch morning_switch;
     private Switch afternoon_switch;
+    private Button notificationButton;
+    private Button busButton;
+    private Button mapButton;
     private String date;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference studentRef = db.collection("student");
@@ -46,6 +52,12 @@ public class ScheduleActivity extends AppCompatActivity {
         date_textView = (TextView) findViewById(R.id.dateTextView);
         morning_switch = (Switch) findViewById(R.id.morningSwitch);
         afternoon_switch = (Switch) findViewById(R.id.afternoonSwitch);
+        notificationButton = (Button) findViewById(R.id.notificationButton);
+        busButton = (Button) findViewById(R.id.busButton);
+        mapButton = (Button) findViewById(R.id.mapButton);
+        notificationButton.setOnClickListener(this);
+        busButton.setOnClickListener(this);
+        mapButton.setOnClickListener(this);
 
 
         calendar_view.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -135,4 +147,20 @@ public class ScheduleActivity extends AppCompatActivity {
     } else {
             studentRef.document("1").update("Absent", FieldValue.arrayRemove(schedule));
         }}
+
+    @Override
+    public void onClick(View v) {
+        if(v == mapButton){
+            Intent intent = new Intent(ScheduleActivity.this,MapsActivity.class);
+            startActivity(intent);
+        }
+        if(v == busButton){
+            Intent intent = new Intent(ScheduleActivity.this,BusActivity.class);
+            startActivity(intent);
+        }
+        if(v == notificationButton){
+            Intent intent = new Intent(ScheduleActivity.this,NotificationActivity.class);
+            startActivity(intent);
+        }
+    }
 }
