@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Welcome to     Road Rong Rean"
+        android:textAlignment="center"
+        android:textSize="50dp"
+        />
+
+    <EditText
+        android:id="@+id/usernameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="100dp"
+        android:paddingTop="4dp"
+        android:text="parent1"
+        android:background="@drawable/my_button_bg"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
+    <EditText
+        android:id="@+id/passwordTextView"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="30dp"
+        android:paddingTop="4dp"
+        android:text="12345"
+        android:background="@drawable/my_button_bg"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="150dp"
+        android:layout_marginRight="150dp"
+        android:text="Login"
+        />
+
+
+</LinearLayout>

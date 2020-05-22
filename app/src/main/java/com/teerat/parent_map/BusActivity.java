@@ -87,6 +87,10 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
         busIcon_imageView.setImageBitmap(resizeIcons("bus_logo", 300, 300));
         driverIcon_imageView.setImageBitmap(resizeIcons("driver_logo", 300, 300));
 
+        Intent intent = getIntent();
+        Parent parent = intent.getParcelableExtra("parent");
+        name_textView.setText(parent.getFirstName());
+
 
     }
 

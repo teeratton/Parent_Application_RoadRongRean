@@ -1,6 +1,7 @@
 package com.teerat.parent_map;
 
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
@@ -19,6 +20,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -39,13 +45,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button notificationButton;
     private Button busButton;
     private Button scheduleButton;
-    private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("bus/B111");
+    private String studentId;
+    private Parent parent;
+    private CollectionReference busRef = FirebaseFirestore.getInstance().collection("bus");
+    private CollectionReference studentRef = FirebaseFirestore.getInstance().collection("student");
+    private DocumentReference bDocRef = FirebaseFirestore.getInstance().document("bus/B002");
+    private DocumentReference sDocRef;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    protected void showBus() {
         Log.w("test", "2");
-        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        bDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot.exists()) {
@@ -76,6 +85,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         notificationButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
+        Intent intent = getIntent();
+        parent = intent.getParcelableExtra("parent");
+        ///Log.d("TAG", parent.getStudentList().toString());
+
+        getID();
+
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -118,6 +133,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(iconName, "drawable", getPackageName()));
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         return resizedBitmap;
+    }
+
+    private void getID(){
+        Log.d("TAG", parent.getFirstName());
+
+        studentId = Integer.toString(parent.getStudentList().get(0));
+        Log.d("TAG", studentId);
+
+        sDocRef = studentRef.document(studentId);
+        sDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if (documentSnapshot.exists()) {
+                    String busId= documentSnapshot.getString("busID");
+                    Log.d("busID", busId);
+
+                    bDocRef = busRef.document(busId);
+                    showBus();
+
+
+                } else if (e != null) {
+                    Log.w("fail", "Got an exception!", e);
+                }
+            }
+        });
+
+
     }
 
     @Override
