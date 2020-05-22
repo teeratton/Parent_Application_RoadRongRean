@@ -6,9 +6,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#515151"
+        android:textAlignment="center"
         android:text="Profile"
-        android:textSize="50sp"
-        android:gravity="center_horizontal" />
+        android:textColor="#ffffff"
+        android:textSize="30sp" />
 
 
     <ImageView
@@ -16,6 +18,7 @@
         android:layout_height="200dp"
         android:scaleType="fitXY"
         android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
         android:src="@drawable/user" />
 
     <TextView
@@ -26,81 +29,52 @@
         android:textSize="30sp"
         android:text="name" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/logout" />
+            <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Student ID : " />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Class : " />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Parent : " />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Emergency call : " />
-
+                android:layout_height="50dp"
+                android:layout_weight="5"
+                android:text="Log out"
+                android:background="@drawable/my_button_bg" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <Button
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/studentid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#id" />
-
-            <TextView
-                android:id="@+id/studentclass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#class" />
-
-            <TextView
-                android:id="@+id/parentname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#parentname" />
-
-            <TextView
-                android:id="@+id/emergencycall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#emergencycall" />
-
-        </LinearLayout>
-
+            android:text="Hello"
+            android:background="@drawable/my_button_bg"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/my_button_bg"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:text="Log out"
+            android:background="@drawable/my_button_bg"/>
 
     </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
