@@ -49,7 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Parent parent;
     private CollectionReference busRef = FirebaseFirestore.getInstance().collection("bus");
     private CollectionReference studentRef = FirebaseFirestore.getInstance().collection("student");
-    private DocumentReference bDocRef = FirebaseFirestore.getInstance().document("bus/B002");
+    private DocumentReference bDocRef;
     private DocumentReference sDocRef;
 
     protected void showBus() {
