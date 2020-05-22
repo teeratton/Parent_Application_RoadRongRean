@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,9 +29,12 @@ import java.util.Map;
 
 public class NotificationActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DocumentReference mDocRef;
+    private DocumentReference sDocRef;
     private LinearLayout notificationArea;
     private String time;
+    private String busId;
+    private String studentId;
+    private Parent parent;
     private GeoPoint location;
     private boolean bArriveSchool = false;
     private boolean bLeaveHome = false;
@@ -50,7 +52,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         super.onStart();
         Log.w("test", "2");
 
-        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        sDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot.exists()) {
@@ -118,6 +120,10 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         mapButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
+        Intent intent = getIntent();
+        parent = intent.getParcelableExtra("parent");
+        studentId = intent.getStringExtra("studentId");
+        busId = intent.getStringExtra("busId");
         getDate();
 
     }
@@ -167,7 +173,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         notificationArea.addView(textView);
 
         date = "18-05-2020";
-        mDocRef = FirebaseFirestore.getInstance().document("student/2/Event/" + date);
+        sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
     }
 
     private Drawable resize(Drawable image) {
@@ -181,14 +187,21 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if(v == mapButton){
             Intent intent = new Intent(NotificationActivity.this,MapsActivity.class);
+            intent.putExtra("parent", parent);
             startActivity(intent);
         }
         if(v == busButton){
             Intent intent = new Intent(NotificationActivity.this,BusActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
         if(v == scheduleButton){
             Intent intent = new Intent(NotificationActivity.this,ScheduleActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
     }

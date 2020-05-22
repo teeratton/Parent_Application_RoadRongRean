@@ -40,6 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private String name;
+    private String busId;
     private Double lat;
     private Double lng;
     private Button notificationButton;
@@ -146,12 +147,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot.exists()) {
-                    String busId= documentSnapshot.getString("busID");
+                    busId= documentSnapshot.getString("busID");
                     Log.d("busID", busId);
 
                     bDocRef = busRef.document(busId);
                     showBus();
-
 
                 } else if (e != null) {
                     Log.w("fail", "Got an exception!", e);
@@ -166,14 +166,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onClick(View v) {
         if(v == notificationButton){
             Intent intent = new Intent(MapsActivity.this,NotificationActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
         if(v == busButton){
             Intent intent = new Intent(MapsActivity.this,BusActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("busId", busId);
+            intent.putExtra("studentId", studentId);
             startActivity(intent);
         }
         if(v == scheduleButton){
             Intent intent = new Intent(MapsActivity.this,ScheduleActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
     }

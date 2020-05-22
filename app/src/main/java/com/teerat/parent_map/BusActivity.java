@@ -22,7 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class BusActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("Bus/001");
+    private DocumentReference bDocRef;
+    private DocumentReference dDocRef;
+
 
     private TextView name_textView;
     private TextView numberPlate_textView;
@@ -35,27 +37,29 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
     private String numberPlate;
     private String speed;
     private String distancetoDes;
+    private String driverGener;
+    private String driverContactNo;
+    private String driverAge;
 
     private Button notificationButton;
     private Button scheduleButton;
     private Button mapButton;
+    private String busId;
+    private String driverId;
+    private Parent parent;
+    private String studentId;
 
+    protected void showBusInfo() {
+        name_textView.setText(driverName);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.w("test", "2");
-
-        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        bDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot.exists()) {
-                    driverName = documentSnapshot.getString("name");
-                    numberPlate = documentSnapshot.getString("numberPlate");
-                    speed = documentSnapshot.getString("speed");
+                    numberPlate = documentSnapshot.getString("license");
+                    speed = documentSnapshot.getDouble("speed").toString();
                     speed = speed + " Km";
 
-                    name_textView.setText(driverName);
                     numberPlate_textView.setText(numberPlate);
                     speed_textView.setText(speed);
 
@@ -88,10 +92,52 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
         driverIcon_imageView.setImageBitmap(resizeIcons("driver_logo", 300, 300));
 
         Intent intent = getIntent();
-        Parent parent = intent.getParcelableExtra("parent");
-        name_textView.setText(parent.getFirstName());
+        parent = intent.getParcelableExtra("parent");
+        busId = intent.getStringExtra("busId");
+        studentId = intent.getStringExtra("studentId");
+
+        Log.d("driverId",busId);
+        bDocRef = FirebaseFirestore.getInstance().document("bus/"+busId);
+
+        getDriverId();
+
+    }
+    private void getDriverId(){
+        bDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if (documentSnapshot.exists()) {
+                    driverId= documentSnapshot.getString("driver");
+                    dDocRef = FirebaseFirestore.getInstance().document("driver/"+driverId);
+                    Log.d("driverId",driverId);
+
+                    getDriverInfo();
+
+                } else if (e != null) {
+                    Log.w("fail", "Got an exception!", e);
+                }
+            }
+        });
+    }
+    private void getDriverInfo(){
+        dDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if (documentSnapshot.exists()) {
+                    driverName= documentSnapshot.getString("firstName") +" " + documentSnapshot.getString("lastName");
+                    driverId= documentSnapshot.getString("driver");
+                    driverGener= documentSnapshot.getString("gender");
+                    driverContactNo= documentSnapshot.getString("contactNo");
+                    driverAge= documentSnapshot.getString("age");
+                    showBusInfo();
 
 
+
+                } else if (e != null) {
+                    Log.w("fail", "Got an exception!", e);
+                }
+            }
+        });
     }
 
     public Bitmap resizeIcons(String iconName, int width, int height) {
@@ -104,14 +150,21 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if(v == notificationButton){
             Intent intent = new Intent(BusActivity.this,NotificationActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
         if(v == mapButton){
             Intent intent = new Intent(BusActivity.this,MapsActivity.class);
+            intent.putExtra("parent", parent);
             startActivity(intent);
         }
         if(v == scheduleButton){
             Intent intent = new Intent(BusActivity.this,ScheduleActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
     }
