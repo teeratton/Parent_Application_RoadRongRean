@@ -41,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private String name;
     private String busId;
+    private LatLng homeGeo;
     private Double lat;
     private Double lng;
     private Button notificationButton;
@@ -65,10 +66,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     lng = geo.getLongitude();
 
                     LatLng location = new LatLng(lat, lng);
-                    mMap.clear();
+                    homeGeo = new LatLng(13.73848225, 100.594068);
 
-                    mMap.addMarker(new MarkerOptions().position(location).title("my's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("school_bus", 100, 100))));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(homeGeo).title("my's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("home_icon", 100, 100))));
+
+                    mMap.addMarker(new MarkerOptions().position(location).title("bus's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("school_bus", 100, 100))));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeGeo, 15));
                 } else if (e != null) {
                     Log.w("fail", "Got an exception!", e);
                 }

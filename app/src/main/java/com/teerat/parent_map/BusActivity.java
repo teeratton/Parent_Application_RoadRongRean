@@ -25,10 +25,12 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
     private DocumentReference bDocRef;
     private DocumentReference dDocRef;
 
-
     private TextView name_textView;
     private TextView numberPlate_textView;
     private TextView speed_textView;
+    private TextView driver_Gender_textView;
+    private TextView driver_Age_textView;
+    private TextView driver_ContactNo_textView;
     private TextView distance_textView;
     private ImageView busIcon_imageView;
     private ImageView driverIcon_imageView;
@@ -36,8 +38,7 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
     private String driverName;
     private String numberPlate;
     private String speed;
-    private String distancetoDes;
-    private String driverGener;
+    private String driverGender;
     private String driverContactNo;
     private String driverAge;
 
@@ -51,6 +52,10 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
 
     protected void showBusInfo() {
         name_textView.setText(driverName);
+        driver_Gender_textView.setText(driverGender);
+        driver_Age_textView.setText(driverAge);
+        driver_ContactNo_textView.setText(driverContactNo);
+
 
         bDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -77,7 +82,9 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
         name_textView = (TextView) findViewById(R.id.drivername);
         numberPlate_textView = (TextView) findViewById(R.id.numberplate);
         speed_textView = (TextView) findViewById(R.id.speed);
-        distance_textView = (TextView) findViewById(R.id.distance);
+        driver_Age_textView = (TextView) findViewById(R.id.driverAge);
+        driver_Gender_textView = (TextView) findViewById(R.id.driverGender);
+        driver_ContactNo_textView = (TextView) findViewById(R.id.driverContactNo);
         busIcon_imageView = (ImageView) findViewById(R.id.busLogo);
         driverIcon_imageView = (ImageView) findViewById(R.id.driverLogo);
 
@@ -126,7 +133,7 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
                 if (documentSnapshot.exists()) {
                     driverName= documentSnapshot.getString("firstName") +" " + documentSnapshot.getString("lastName");
                     driverId= documentSnapshot.getString("driver");
-                    driverGener= documentSnapshot.getString("gender");
+                    driverGender= documentSnapshot.getString("gender");
                     driverContactNo= documentSnapshot.getString("contactNo");
                     driverAge= documentSnapshot.getString("age");
                     showBusInfo();
