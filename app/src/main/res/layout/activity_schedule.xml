@@ -7,11 +7,15 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#515151"
+        android:textAlignment="center"
         android:text="Schedule"
-        android:textSize="50sp" />
+        android:textColor="#ffffff"
+        android:textSize="30sp" />
     <CalendarView
         android:id="@+id/calendar"
         android:layout_width="match_parent"
+        android:layout_weight="0.5"
         android:layout_height="wrap_content" />
     <View
         android:layout_width="match_parent"
@@ -21,6 +25,7 @@
         android:id="@+id/dateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:text="Date"
         android:textSize="30sp" />
 
@@ -40,6 +45,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="Morning" />
 
             <TextView

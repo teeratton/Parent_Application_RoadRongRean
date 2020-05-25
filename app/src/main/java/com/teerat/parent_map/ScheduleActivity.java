@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -36,9 +35,12 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     private Button busButton;
     private Button mapButton;
     private String date;
+    private Parent parent;
+    private String studentId;
+    private String busId;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference studentRef = db.collection("student");
-    private DocumentReference document = studentRef.document("1");
+    private DocumentReference sDocRef;
 
 
 
@@ -58,16 +60,22 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         notificationButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         mapButton.setOnClickListener(this);
+        Intent intent = getIntent();
+        parent = intent.getParcelableExtra("parent");
+        studentId = intent.getStringExtra("studentId");
+        busId = intent.getStringExtra("busId");
+        Log.d("studentId", studentId);
 
+        sDocRef = studentRef.document(studentId);
 
         calendar_view.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                date = dayOfMonth + "-" + (month+1) + "-" + year;
+                date = dayOfMonth + "-" + "0"+(month+1) + "-" + year;
                 Log.d("test", date);
                 date_textView.setText(date);
 
-                document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                sDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot document = task.getResult();
@@ -143,23 +151,30 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     }
     private void updateSchedule(String schedule,Boolean check){
         if (check) {
-        studentRef.document("1").update("Absent", FieldValue.arrayUnion(schedule));
+            sDocRef.update("Absent", FieldValue.arrayUnion(schedule));
     } else {
-            studentRef.document("1").update("Absent", FieldValue.arrayRemove(schedule));
+           sDocRef.update("Absent", FieldValue.arrayRemove(schedule));
         }}
 
     @Override
     public void onClick(View v) {
         if(v == mapButton){
             Intent intent = new Intent(ScheduleActivity.this,MapsActivity.class);
+            intent.putExtra("parent", parent);
             startActivity(intent);
         }
         if(v == busButton){
             Intent intent = new Intent(ScheduleActivity.this,BusActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
         if(v == notificationButton){
             Intent intent = new Intent(ScheduleActivity.this,NotificationActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
     }

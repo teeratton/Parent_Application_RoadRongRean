@@ -1,6 +1,7 @@
 package com.teerat.parent_map;
 
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
@@ -19,6 +20,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -34,18 +40,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private String name;
+    private String busId;
+    private LatLng homeGeo;
     private Double lat;
     private Double lng;
     private Button notificationButton;
     private Button busButton;
     private Button scheduleButton;
-    private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("bus/B111");
+    private String studentId;
+    private Parent parent;
+    private CollectionReference busRef = FirebaseFirestore.getInstance().collection("bus");
+    private CollectionReference studentRef = FirebaseFirestore.getInstance().collection("student");
+    private DocumentReference bDocRef;
+    private DocumentReference sDocRef;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    protected void showBus() {
         Log.w("test", "2");
-        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        bDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot.exists()) {
@@ -55,10 +66,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     lng = geo.getLongitude();
 
                     LatLng location = new LatLng(lat, lng);
-                    mMap.clear();
+                    homeGeo = new LatLng(13.73848225, 100.594068);
 
-                    mMap.addMarker(new MarkerOptions().position(location).title("my's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("school_bus", 100, 100))));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(homeGeo).title("my's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("home_icon", 100, 100))));
+
+                    mMap.addMarker(new MarkerOptions().position(location).title("bus's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("school_bus", 100, 100))));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeGeo, 15));
                 } else if (e != null) {
                     Log.w("fail", "Got an exception!", e);
                 }
@@ -76,6 +90,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         notificationButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
+        Intent intent = getIntent();
+        parent = intent.getParcelableExtra("parent");
+        ///Log.d("TAG", parent.getStudentList().toString());
+
+        getID();
+
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -120,18 +140,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return resizedBitmap;
     }
 
+    private void getID(){
+        Log.d("TAG", parent.getFirstName());
+
+        studentId = Integer.toString(parent.getStudentList().get(0));
+        Log.d("TAG", studentId);
+
+        sDocRef = studentRef.document(studentId);
+        sDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if (documentSnapshot.exists()) {
+                    busId= documentSnapshot.getString("busID");
+                    Log.d("busID", busId);
+
+                    bDocRef = busRef.document(busId);
+                    showBus();
+
+                } else if (e != null) {
+                    Log.w("fail", "Got an exception!", e);
+                }
+            }
+        });
+
+
+    }
+
     @Override
     public void onClick(View v) {
         if(v == notificationButton){
             Intent intent = new Intent(MapsActivity.this,NotificationActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
         if(v == busButton){
             Intent intent = new Intent(MapsActivity.this,BusActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("busId", busId);
+            intent.putExtra("studentId", studentId);
             startActivity(intent);
         }
         if(v == scheduleButton){
             Intent intent = new Intent(MapsActivity.this,ScheduleActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
     }

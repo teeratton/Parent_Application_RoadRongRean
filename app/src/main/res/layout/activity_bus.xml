@@ -47,21 +47,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="License plate : "
+                android:layout_marginBottom="10dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/numberplate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginBottom="20dp"
                 android:text="#platenumber" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
                 android:text="speed : "
                 android:textStyle="bold" />
 
@@ -69,22 +69,9 @@
                 android:id="@+id/speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="#speed" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Distance to destination : "
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="#distanctodes" />
 
 
         </LinearLayout>
@@ -125,6 +112,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="Driver Name : "
                 android:textStyle="bold" />
 
@@ -132,7 +120,49 @@
                 android:id="@+id/drivername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:text="#platenumber" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Driver Age : "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/driverAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="#platenumber" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Driver Gender : "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/driverGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="#platenumber" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Driver No : "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/driverContactNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="#platenumber" />
+
+
 
 
         </LinearLayout>

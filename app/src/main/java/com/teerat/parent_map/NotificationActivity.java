@@ -9,13 +9,15 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -26,13 +28,17 @@ import com.google.firebase.firestore.GeoPoint;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class NotificationActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DocumentReference mDocRef;
+    private DocumentReference sDocRef;
     private LinearLayout notificationArea;
     private String time;
+    private String busId;
+    private String studentId;
+    private Parent parent;
     private GeoPoint location;
     private boolean bArriveSchool = false;
     private boolean bLeaveHome = false;
@@ -44,13 +50,14 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     private Button scheduleButton;
     private String date;
     private Drawable logo;
+    private String studentName = "";
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.w("test", "2");
 
-        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        sDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot.exists()) {
@@ -63,7 +70,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         location = (GeoPoint) leaveHome.get("LOCATION");
                         time = (String) leaveHome.get("TIME");
                         if (!bLeaveHome) {
-                            updateNotification("Leave the home", time, location);
+                            updateNotification("leave the home", time, location);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
@@ -73,7 +80,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         location = (GeoPoint) arriveSchool.get("LOCATION");
                         time = (String) arriveSchool.get("TIME");
                         if (!bArriveSchool) {
-                            updateNotification("Arrive at school", time, location);
+                            updateNotification("arrive at school", time, location);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
@@ -83,7 +90,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         location = (GeoPoint) leaveSchool.get("LOCATION");
                         time = (String) leaveSchool.get("TIME");
                         if (!bLeaveSchool) {
-                            updateNotification("Leave the school", time, location);
+                            updateNotification("leave the school", time, location);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
@@ -93,7 +100,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         location = (GeoPoint) arriveHome.get("LOCATION");
                         time = (String) arriveHome.get("TIME");
                         if (!bArriveHome) {
-                            updateNotification("Arrived home", time, location);
+                            updateNotification("arrived home", time, location);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
@@ -118,24 +125,29 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         mapButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
+        Intent intent = getIntent();
+        parent = intent.getParcelableExtra("parent");
+        studentId = intent.getStringExtra("studentId");
+        busId = intent.getStringExtra("busId");
+        getStudentName();
         getDate();
 
     }
 
     private void updateNotification(String state, String time, GeoPoint location) {
-        if (state.equals("Leave the home")) {
+        if (state.equals("leave the home")) {
             logo = getResources().getDrawable(R.drawable.leave_home_or_school);
             bLeaveHome = true;
         }
-        if (state.equals("Arrive at school")) {
+        if (state.equals("arrive at school")) {
             logo = getResources().getDrawable(R.drawable.school_logo);
             bArriveSchool = true;
         }
-        if (state.equals("Leave the school")) {
+        if (state.equals("leave the school")) {
             logo = getResources().getDrawable(R.drawable.leave_home_or_school);
             bLeaveSchool = true;
         }
-        if (state.equals("Arrived home")) {
+        if (state.equals("arrived home")) {
             logo = getResources().getDrawable(R.drawable.home_logo);
             bArriveHome = true;
         }
@@ -147,7 +159,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         logo.setBounds( 0, 0, w, h );
         textView.setCompoundDrawables(logo,null,null,null);
         textView.setCompoundDrawablePadding(50);
-        textView.setText(state + " : " + time);
+        textView.setText(studentName +" " + state + " : " + time);
         textView.setTextSize(20);
         textView.setGravity(Gravity.CENTER);
         textView.setPadding(0,0,0,50);
@@ -156,6 +168,18 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
 
 
     }
+
+    private void getStudentName(){
+        sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId);
+        sDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                studentName = document.getString("firstName");
+            }
+
+    });}
+
 
     private void getDate() {
         Date c = Calendar.getInstance().getTime();
@@ -167,7 +191,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         notificationArea.addView(textView);
 
         date = "18-05-2020";
-        mDocRef = FirebaseFirestore.getInstance().document("student/2/Event/" + date);
+        sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
     }
 
     private Drawable resize(Drawable image) {
@@ -181,14 +205,21 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if(v == mapButton){
             Intent intent = new Intent(NotificationActivity.this,MapsActivity.class);
+            intent.putExtra("parent", parent);
             startActivity(intent);
         }
         if(v == busButton){
             Intent intent = new Intent(NotificationActivity.this,BusActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
         if(v == scheduleButton){
             Intent intent = new Intent(NotificationActivity.this,ScheduleActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
     }
