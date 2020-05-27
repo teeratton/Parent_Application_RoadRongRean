@@ -74,6 +74,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".PopMapActivity"
+            android:theme="@style/AppTheme.CustomPopup"
+            ></activity>
+
     </application>
 
 </manifest>

@@ -39,7 +39,10 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     private String busId;
     private String studentId;
     private Parent parent;
-    private GeoPoint location;
+    private GeoPoint leaveHomeLocation;
+    private GeoPoint arriveSchoolLocation;
+    private GeoPoint leaveSchoolLocation;
+    private GeoPoint arriveHomeLocation;
     private boolean bArriveSchool = false;
     private boolean bLeaveHome = false;
     private boolean bLeaveSchool = false;
@@ -67,40 +70,40 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                     System.out.println(t);
                     try {
                         Map<String, Object> leaveHome = (java.util.Map<String, Object>) t.get("LEAVEHOME");
-                        location = (GeoPoint) leaveHome.get("LOCATION");
+                        leaveHomeLocation = (GeoPoint) leaveHome.get("LOCATION");
                         time = (String) leaveHome.get("TIME");
                         if (!bLeaveHome) {
-                            updateNotification("leave the home", time, location);
+                            updateNotification("leave the home", time, leaveHomeLocation);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
                     }
                     try {
                         Map<String, Object> arriveSchool = (java.util.Map<String, Object>) t.get("ARRIVESCHOOL");
-                        location = (GeoPoint) arriveSchool.get("LOCATION");
+                        arriveSchoolLocation = (GeoPoint) arriveSchool.get("LOCATION");
                         time = (String) arriveSchool.get("TIME");
                         if (!bArriveSchool) {
-                            updateNotification("arrive at school", time, location);
+                            updateNotification("arrive at school", time, arriveSchoolLocation);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
                     }
                     try {
                         Map<String, Object> leaveSchool = (java.util.Map<String, Object>) t.get("LEAVESCHOOL");
-                        location = (GeoPoint) leaveSchool.get("LOCATION");
+                        leaveHomeLocation = (GeoPoint) leaveSchool.get("LOCATION");
                         time = (String) leaveSchool.get("TIME");
                         if (!bLeaveSchool) {
-                            updateNotification("leave the school", time, location);
+                            updateNotification("leave the school", time, leaveHomeLocation);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
                     }
                     try {
                         Map<String, Object> arriveHome = (java.util.Map<String, Object>) t.get("ARRIVEHOME");
-                        location = (GeoPoint) arriveHome.get("LOCATION");
+                        arriveHomeLocation = (GeoPoint) arriveHome.get("LOCATION");
                         time = (String) arriveHome.get("TIME");
                         if (!bArriveHome) {
-                            updateNotification("arrived home", time, location);
+                            updateNotification("arrived home", time, arriveHomeLocation);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
@@ -134,7 +137,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    private void updateNotification(String state, String time, GeoPoint location) {
+    private void updateNotification(String state, String time, final GeoPoint location) {
         if (state.equals("leave the home")) {
             logo = getResources().getDrawable(R.drawable.leave_home_or_school);
             bLeaveHome = true;
@@ -152,6 +155,8 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             bArriveHome = true;
         }
 
+        final Double lat = location.getLatitude();
+        final Double lng = location.getLongitude();
         TextView textView = new TextView(this);
         logo = resize(logo);
         int h = logo.getIntrinsicHeight();
@@ -163,6 +168,17 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         textView.setTextSize(20);
         textView.setGravity(Gravity.CENTER);
         textView.setPadding(0,0,0,50);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NotificationActivity.this,PopMapActivity.class);
+                intent.putExtra("lat",lat);
+                intent.putExtra("lng",lng);
+                startActivity(intent);
+            }
+        });
+
 
         notificationArea.addView(textView);
 
