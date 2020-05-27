@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,6 +43,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String name;
     private String busId;
     private LatLng homeGeo;
+    private LatLng busGeo;
     private Double lat;
     private Double lng;
     private Button notificationButton;
@@ -49,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button scheduleButton;
     private String studentId;
     private Parent parent;
+    private ImageButton goBusButton;
     private CollectionReference busRef = FirebaseFirestore.getInstance().collection("bus");
     private CollectionReference studentRef = FirebaseFirestore.getInstance().collection("student");
     private DocumentReference bDocRef;
@@ -65,14 +68,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     lat = geo.getLatitude();
                     lng = geo.getLongitude();
 
-                    LatLng location = new LatLng(lat, lng);
+                    busGeo = new LatLng(lat, lng);
                     homeGeo = new LatLng(13.73848225, 100.594068);
 
                     mMap.clear();
                     mMap.addMarker(new MarkerOptions().position(homeGeo).title("my's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("home_icon", 100, 100))));
 
-                    mMap.addMarker(new MarkerOptions().position(location).title("bus's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("school_bus", 100, 100))));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeGeo, 15));
+                    mMap.addMarker(new MarkerOptions().position(busGeo).title("bus's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("school_bus", 100, 100))));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(busGeo, 13));
+
                 } else if (e != null) {
                     Log.w("fail", "Got an exception!", e);
                 }
@@ -87,6 +91,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         notificationButton = (Button) findViewById(R.id.notificationButton);
         busButton = (Button) findViewById(R.id.busButton);
         scheduleButton = (Button) findViewById(R.id.scheduleButton);
+        goBusButton = (ImageButton) findViewById(R.id.go_to_bus_Button);
+        goBusButton.setOnClickListener(this);
         notificationButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
@@ -188,6 +194,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             intent.putExtra("studentId", studentId);
             intent.putExtra("busId", busId);
             startActivity(intent);
+        }
+        if(v == goBusButton){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(busGeo, 13));
+
         }
     }
 }

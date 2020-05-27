@@ -55,9 +55,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     private Drawable logo;
     private String studentName = "";
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    protected void getNotification() {
         Log.w("test", "2");
 
         sDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -167,7 +165,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         textView.setText(studentName +" " + state + " : " + time);
         textView.setTextSize(20);
         textView.setGravity(Gravity.CENTER);
-        textView.setPadding(0,0,0,50);
+        textView.setPadding(20,0,0,50);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,13 +199,14 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         Date c = Calendar.getInstance().getTime();
         date = df.format(c);
         TextView textView = new TextView(this);
-        textView.setText(date);
+        textView.setText(date + studentId);
         textView.setTextSize(50);
         textView.setPadding(0,0,0,50);
         notificationArea.addView(textView);
 
         date = "18-05-2020";
         sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
+        getNotification();
     }
 
     private Drawable resize(Drawable image) {
