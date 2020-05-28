@@ -204,7 +204,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         textView.setPadding(0,0,0,50);
         notificationArea.addView(textView);
 
-        date = "18-05-2020";
+        //date = "22-04-2020";
         sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
         getNotification();
     }

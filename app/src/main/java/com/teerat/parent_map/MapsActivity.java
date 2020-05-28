@@ -44,6 +44,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String busId;
     private LatLng homeGeo;
     private LatLng busGeo;
+    private LatLng schoolGeo;
     private Double lat;
     private Double lng;
     private Button notificationButton;
@@ -70,18 +71,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     busGeo = new LatLng(lat, lng);
                     homeGeo = new LatLng(13.73848225, 100.594068);
+                    schoolGeo = new LatLng(13.9074539, 100.5014685);
 
                     mMap.clear();
                     mMap.addMarker(new MarkerOptions().position(homeGeo).title("my's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("home_icon", 100, 100))));
 
                     mMap.addMarker(new MarkerOptions().position(busGeo).title("bus's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("school_bus", 100, 100))));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(busGeo, 13));
+                    mMap.addMarker(new MarkerOptions().position(schoolGeo).title("school's location").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("school_logo", 100, 100))));
 
                 } else if (e != null) {
                     Log.w("fail", "Got an exception!", e);
                 }
             }
         });
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(busGeo, 13));
+
+
     }
 
     @Override
