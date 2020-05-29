@@ -91,7 +91,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         leaveHomeLocation = (GeoPoint) leaveSchool.get("LOCATION");
                         time = (String) leaveSchool.get("TIME");
                         if (!bLeaveSchool) {
-                            updateNotification("leave the school", time, leaveHomeLocation);
+                            updateNotification("leave the school", time, leaveSchoolLocation);
                         }
                     } catch (Exception a) {
                         System.out.println("S");

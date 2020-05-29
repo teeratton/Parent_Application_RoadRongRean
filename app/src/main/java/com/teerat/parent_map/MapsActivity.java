@@ -127,13 +127,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Log.w("test", "1");
-        lat = 0.0;
-        lng = 0.0;
 
 
-        LatLng location = new LatLng(lat, lng);
-        System.out.println(location);
+
+        LatLng location = new LatLng(13.9074539, 100.5014685);
 
 
         //LatLng location = new LatLng(51.51671, -0.26018);

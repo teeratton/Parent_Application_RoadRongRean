@@ -31,13 +31,14 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
     private TextView driver_Gender_textView;
     private TextView driver_Age_textView;
     private TextView driver_ContactNo_textView;
+    private TextView bus_id_textView;
     private TextView distance_textView;
     private ImageView busIcon_imageView;
     private ImageView driverIcon_imageView;
 
     private String driverName;
     private String numberPlate;
-    private String speed;
+    private Double speed;
     private String driverGender;
     private String driverContactNo;
     private String driverAge;
@@ -62,11 +63,12 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot.exists()) {
                     numberPlate = documentSnapshot.getString("license");
-                    speed = documentSnapshot.getDouble("speed").toString();
-                    speed = speed + " Km";
+                    speed = documentSnapshot.getDouble("speed");
+                    Integer speedInt = speed.intValue();
+                    String speedString = speedInt.toString() + " Km";
 
                     numberPlate_textView.setText(numberPlate);
-                    speed_textView.setText(speed);
+                    speed_textView.setText(speedString);
 
                 } else if (e != null) {
                     Log.w("fail", "Got an exception!", e);
@@ -85,6 +87,7 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
         driver_Age_textView = (TextView) findViewById(R.id.driverAge);
         driver_Gender_textView = (TextView) findViewById(R.id.driverGender);
         driver_ContactNo_textView = (TextView) findViewById(R.id.driverContactNo);
+        bus_id_textView = (TextView) findViewById(R.id.busIdTextView);
         busIcon_imageView = (ImageView) findViewById(R.id.busLogo);
         driverIcon_imageView = (ImageView) findViewById(R.id.driverLogo);
 
@@ -115,8 +118,10 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot.exists()) {
                     driverId= documentSnapshot.getString("driver");
+                    bus_id_textView.setText("Bus number " + busId + " of WS school");
                     dDocRef = FirebaseFirestore.getInstance().document("driver/"+driverId);
                     Log.d("driverId",driverId);
+
 
                     getDriverInfo();
 
