@@ -204,7 +204,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         Date c = Calendar.getInstance().getTime();
         date = df.format(c);
         TextView textView = new TextView(this);
-        //date = "25-05-2020";
+        date = "25-05-2020";
 
         textView.setText(date);
         textView.setGravity(Gravity.CENTER);
@@ -212,7 +212,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         textView.setPadding(0,0,0,50);
         notificationArea.addView(textView);
 
-        //date = "18-05-2020";
+        date = "18-05-2020";
         sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
         getNotification();
     }
@@ -248,6 +248,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             startActivity(intent);
         }
         if(v == speedWarningButton){
+            date = "30-05-2020";
             Intent intent = new Intent(NotificationActivity.this,PopSpeedWarningActivity.class);
             intent.putExtra("date", date);
             intent.putExtra("busId", busId);

@@ -3,6 +3,8 @@ package com.teerat.parent_map;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -173,6 +175,7 @@ public class PopSelectLocation extends AppCompatActivity implements OnMapReadyCa
         markerOptions.position(latLng);
         markerOptions.title("user Current Location");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("home_icon", 100, 100)));
         
         currentUserLocationMarker = mMap.addMarker(markerOptions);
 
@@ -217,8 +220,13 @@ public class PopSelectLocation extends AppCompatActivity implements OnMapReadyCa
                 DocumentReference sDocRef = FirebaseFirestore.getInstance().document("student/"+e);
                 sDocRef.update("GeoPoint" , geoPoint);
             }
-            Toast.makeText(this,latLng.toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"home's location updated",Toast.LENGTH_SHORT).show();
 
         }
+    }
+    public Bitmap resizeMapIcons(String iconName, int width, int height) {
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(iconName, "drawable", getPackageName()));
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        return resizedBitmap;
     }
 }
