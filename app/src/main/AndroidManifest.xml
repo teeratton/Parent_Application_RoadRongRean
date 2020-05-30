@@ -92,6 +92,9 @@
             android:theme="@style/AppTheme.CustomPopup"
             ></activity>
         <activity android:name=".PopSelectLocation"
+        android:theme="@style/AppTheme.CustomPopup"
+        ></activity>
+        <activity android:name=".PopSelectStudent"
             android:theme="@style/AppTheme.CustomPopup"
             ></activity>
 

@@ -231,6 +231,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         if(v == mapButton){
             Intent intent = new Intent(NotificationActivity.this,MapsActivity.class);
             intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
             startActivity(intent);
         }
         if(v == busButton){

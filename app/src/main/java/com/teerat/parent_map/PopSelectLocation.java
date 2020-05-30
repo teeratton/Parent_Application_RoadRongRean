@@ -61,7 +61,7 @@ public class PopSelectLocation extends AppCompatActivity implements OnMapReadyCa
         selectLocationButton = (Button) findViewById(R.id.selectLocationButton);
         selectLocationButton.setOnClickListener(this);
         Intent intent = getIntent();
-        parent = intent.getParcelableExtra("Parent");
+        parent = intent.getParcelableExtra("parent");
 
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
