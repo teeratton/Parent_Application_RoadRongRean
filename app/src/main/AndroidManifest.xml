@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity" />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -64,6 +64,16 @@
                 <action android:name="android.intent.action.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ProfileActivity">
+
+            <!-- Default Intent Filter -->
+            <intent-filter>
+                <action android:name="android.intent.action.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
         <activity android:name=".LoginActivity">
 
             <!-- Default Intent Filter -->
@@ -75,6 +85,13 @@
         </activity>
 
         <activity android:name=".PopMapActivity"
+            android:theme="@style/AppTheme.CustomPopup"
+            ></activity>
+
+        <activity android:name=".PopSpeedWarningActivity"
+            android:theme="@style/AppTheme.CustomPopup"
+            ></activity>
+        <activity android:name=".PopSelectLocation"
             android:theme="@style/AppTheme.CustomPopup"
             ></activity>
 

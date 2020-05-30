@@ -19,6 +19,8 @@
         android:scaleType="fitXY"
         android:layout_gravity="center_horizontal"
         android:paddingTop="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/user" />
 
     <TextView
@@ -41,12 +43,55 @@
             android:layout_gravity="center"
             android:orientation="horizontal">
             <ImageView
-                android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:src="@drawable/logout" />
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/select_location_logo" />
             <Button
+                android:id="@+id/setLocationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="5"
+                android:text="Set home location"
+                android:background="@drawable/my_button_bg" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/select_student_logo" />
+            <Button
+                android:id="@+id/selectStudentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="5"
+                android:text="Select student"
+                android:background="@drawable/my_button_bg" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/logout_logo" />
+            <Button
+                android:id="@+id/logOutButton"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="5"
@@ -54,25 +99,11 @@
                 android:background="@drawable/my_button_bg" />
         </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:text="Hello"
-            android:background="@drawable/my_button_bg"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/my_button_bg"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:text="Log out"
-            android:background="@drawable/my_button_bg"/>
 
     </LinearLayout>
+
+
+
 
 
 
@@ -86,6 +117,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/colorBlue"
             android:textSize="8sp"
             android:text="Map" />
 
@@ -94,8 +126,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/colorBlue"
             android:textSize="8sp"
-
             android:text="Notification" />
 
         <Button
@@ -103,8 +135,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/colorBlue"
             android:textSize="8sp"
-
             android:text="Bus" />
 
         <Button
@@ -112,6 +144,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/colorBlue"
             android:textSize="8sp"
             android:text="Schedule" />
 
@@ -120,10 +153,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/colorYellow"
             android:textSize="8sp"
             android:text="Profle" />
 
 
     </LinearLayout>
+
+
 
 </LinearLayout>

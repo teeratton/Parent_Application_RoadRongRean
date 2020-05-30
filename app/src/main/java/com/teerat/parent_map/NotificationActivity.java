@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -51,6 +52,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     private Button mapButton;
     private Button busButton;
     private Button scheduleButton;
+    private Button speedWarningButton;
     private String date;
     private Drawable logo;
     private String studentName = "";
@@ -123,13 +125,16 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         mapButton = (Button) findViewById(R.id.mapButton);
         busButton = (Button) findViewById(R.id.busButton);
         scheduleButton = (Button) findViewById(R.id.scheduleButton);
+        speedWarningButton = (Button) findViewById(R.id.speedWarningButton);
         mapButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
+        speedWarningButton.setOnClickListener(this);
         Intent intent = getIntent();
         parent = intent.getParcelableExtra("parent");
         studentId = intent.getStringExtra("studentId");
         busId = intent.getStringExtra("busId");
+
         getStudentName();
         getDate();
 
@@ -199,17 +204,20 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         Date c = Calendar.getInstance().getTime();
         date = df.format(c);
         TextView textView = new TextView(this);
-        date = "25-05-2020";
+        //date = "25-05-2020";
 
         textView.setText(date);
+        textView.setGravity(Gravity.CENTER);
         textView.setTextSize(50);
         textView.setPadding(0,0,0,50);
         notificationArea.addView(textView);
 
-        date = "18-05-2020";
+        //date = "18-05-2020";
         sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
         getNotification();
     }
+
+
 
     private Drawable resize(Drawable image) {
         Bitmap b = ((BitmapDrawable)image).getBitmap();
@@ -238,6 +246,13 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             intent.putExtra("studentId", studentId);
             intent.putExtra("busId", busId);
             startActivity(intent);
+        }
+        if(v == speedWarningButton){
+            Intent intent = new Intent(NotificationActivity.this,PopSpeedWarningActivity.class);
+            intent.putExtra("date", date);
+            intent.putExtra("busId", busId);
+            startActivity(intent);
+
         }
     }
 
