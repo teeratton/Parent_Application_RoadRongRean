@@ -50,6 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button notificationButton;
     private Button busButton;
     private Button scheduleButton;
+    private Button profileButton;
     private String studentId;
     private Parent parent;
     private ImageButton goBusButton;
@@ -96,11 +97,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         notificationButton = (Button) findViewById(R.id.notificationButton);
         busButton = (Button) findViewById(R.id.busButton);
         scheduleButton = (Button) findViewById(R.id.scheduleButton);
+        profileButton = (Button) findViewById(R.id.profileButton);
         goBusButton = (ImageButton) findViewById(R.id.go_to_bus_Button);
         goBusButton.setOnClickListener(this);
         notificationButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
+        profileButton.setOnClickListener(this);
         Intent intent = getIntent();
         parent = intent.getParcelableExtra("parent");
         ///Log.d("TAG", parent.getStudentList().toString());
@@ -197,8 +200,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             intent.putExtra("busId", busId);
             startActivity(intent);
         }
+        if(v == profileButton){
+            Intent intent = new Intent(MapsActivity.this,ProfileActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
+            startActivity(intent);
+        }
         if(v == goBusButton){
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(busGeo, 13));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(busGeo, 13));
 
         }
     }
