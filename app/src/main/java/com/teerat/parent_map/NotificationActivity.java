@@ -88,7 +88,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                     }
                     try {
                         Map<String, Object> leaveSchool = (java.util.Map<String, Object>) t.get("LEAVESCHOOL");
-                        leaveHomeLocation = (GeoPoint) leaveSchool.get("LOCATION");
+                        leaveSchoolLocation = (GeoPoint) leaveSchool.get("LOCATION");
                         time = (String) leaveSchool.get("TIME");
                         if (!bLeaveSchool) {
                             updateNotification("leave the school", time, leaveSchoolLocation);
@@ -199,12 +199,14 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         Date c = Calendar.getInstance().getTime();
         date = df.format(c);
         TextView textView = new TextView(this);
-        textView.setText(date + studentId);
+        date = "25-05-2020";
+
+        textView.setText(date);
         textView.setTextSize(50);
         textView.setPadding(0,0,0,50);
         notificationArea.addView(textView);
 
-        //date = "22-04-2020";
+        date = "18-05-2020";
         sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
         getNotification();
     }
