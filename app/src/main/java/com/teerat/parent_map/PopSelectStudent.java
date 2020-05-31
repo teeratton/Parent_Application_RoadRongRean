@@ -76,7 +76,7 @@ public class PopSelectStudent extends AppCompatActivity {
                                     LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT
                             );
-                            params.setMargins(0, 0, 0, 30);
+                            params.setMargins(30, 0, 30, 30);
 
                             textView.setLayoutParams(params);
 
