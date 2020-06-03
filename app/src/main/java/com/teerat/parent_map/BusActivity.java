@@ -1,5 +1,6 @@
 package com.teerat.parent_map;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -46,6 +47,7 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
     private Button notificationButton;
     private Button scheduleButton;
     private Button mapButton;
+    private Button profileButton;
     private String busId;
     private String driverId;
     private Parent parent;
@@ -94,9 +96,11 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
         mapButton = (Button) findViewById(R.id.mapButton);
         notificationButton = (Button) findViewById(R.id.notificationButton);
         scheduleButton = (Button) findViewById(R.id.scheduleButton);
+        profileButton = (Button) findViewById(R.id.profileButton);
         mapButton.setOnClickListener(this);
         notificationButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
+        profileButton.setOnClickListener(this);
 
         busIcon_imageView.setImageBitmap(resizeIcons("bus_logo", 300, 300));
         driverIcon_imageView.setImageBitmap(resizeIcons("driver_logo", 300, 300));
@@ -176,6 +180,13 @@ public class BusActivity extends AppCompatActivity implements View.OnClickListen
             Intent intent = new Intent(BusActivity.this,ScheduleActivity.class);
             intent.putExtra("parent", parent);
             intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
+            startActivity(intent);
+        }
+        if(v == profileButton){
+            Intent intent = new Intent(BusActivity.this,ProfileActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId.toString());
             intent.putExtra("busId", busId);
             startActivity(intent);
         }

@@ -3,6 +3,7 @@ package com.teerat.parent_map;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -21,11 +22,15 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ProfileActivity extends AppCompatActivity  implements View.OnClickListener{
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button selectLocationButton;
     private Button selectStudentButton;
     private Button logoutButton;
+    private Button mapButton;
+    private Button notificationButton;
+    private Button scheduleButton;
+    private Button busButton;
     private TextView studentNameTextView;
     private ImageView studentImageView;
     private Parent parent;
@@ -40,6 +45,16 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        mapButton = (Button) findViewById(R.id.mapButton);
+        busButton = (Button) findViewById(R.id.busButton);
+        notificationButton = (Button) findViewById(R.id.notificationButton);
+        scheduleButton = (Button) findViewById(R.id.scheduleButton);
+
+        mapButton.setOnClickListener(this);
+        busButton.setOnClickListener(this);
+        notificationButton.setOnClickListener(this);
+        scheduleButton.setOnClickListener(this);
+
 
         selectLocationButton = (Button) findViewById(R.id.setLocationButton);
         selectStudentButton = (Button) findViewById(R.id.selectStudentButton);
@@ -78,6 +93,33 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         }
         if (v == logoutButton){
             Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
+            startActivity(intent);
+        }
+
+        if(v == notificationButton){
+            Intent intent = new Intent(ProfileActivity.this,NotificationActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
+            startActivity(intent);
+        }
+        if(v == mapButton){
+            Intent intent = new Intent(ProfileActivity.this,MapsActivity.class);
+            intent.putExtra("parent", parent);
+            startActivity(intent);
+        }
+        if(v == scheduleButton){
+            Intent intent = new Intent(ProfileActivity.this,ScheduleActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
+            startActivity(intent);
+        }
+        if(v == busButton){
+            Intent intent = new Intent(ProfileActivity.this,BusActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId.toString());
+            intent.putExtra("busId", busId);
             startActivity(intent);
         }
     }

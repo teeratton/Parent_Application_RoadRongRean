@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorBlue"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:text="Map" />
 
         <Button
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorYellow"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:text="Notification" />
 
         <Button
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorBlue"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:text="Bus" />
 
         <Button
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorBlue"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:text="Schedule" />
 
         <Button
@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorBlue"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:text="Profle" />
 
 

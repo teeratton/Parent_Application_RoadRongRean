@@ -1,9 +1,11 @@
 package com.teerat.parent_map;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -59,6 +61,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     private Button busButton;
     private Button scheduleButton;
     private Button speedWarningButton;
+    private Button profileButton;
     private String date;
     private Drawable logo;
     private String studentName = "";
@@ -138,9 +141,11 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         busButton = (Button) findViewById(R.id.busButton);
         scheduleButton = (Button) findViewById(R.id.scheduleButton);
         speedWarningButton = (Button) findViewById(R.id.speedWarningButton);
+        profileButton = (Button) findViewById(R.id.profileButton);
         mapButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
+        profileButton.setOnClickListener(this);
         speedWarningButton.setOnClickListener(this);
         Intent intent = getIntent();
         parent = intent.getParcelableExtra("parent");
@@ -156,7 +161,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     private void updateNotification(String state, String time, final GeoPoint location,Boolean notified) {
 
         if (state.equals("leave the home")) {
-            logo = getResources().getDrawable(R.drawable.leave_home_or_school);
+            logo = getResources().getDrawable(R.drawable.get_on_off_bus);
             if(!notified) {
                 Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.leave_home_or_school)
@@ -164,6 +169,8 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         .setContentText(state)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                                R.drawable.leave_home_or_school))
                         .build();
 
                 notificationManager.notify(1, notification);
@@ -172,10 +179,12 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             bLeaveHome = true;
         }
         if (state.equals("arrive at school")) {
-            logo = getResources().getDrawable(R.drawable.school_logo);
+            logo = getResources().getDrawable(R.drawable.arrive_school);
             if(!notified) {
                 Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.school_logo)
+                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                                R.drawable.school_logo))
                         .setContentTitle("Student Activity")
                         .setContentText(state)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -188,12 +197,14 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             bArriveSchool = true;
         }
         if (state.equals("leave the school")) {
-            logo = getResources().getDrawable(R.drawable.leave_home_or_school);
+            logo = getResources().getDrawable(R.drawable.get_on_off_bus);
             if(!notified) {
                 Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.leave_home_or_school)
                         .setContentTitle("Student Activity")
                         .setContentText(state)
+                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                                R.drawable.leave_home_or_school))
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                         .build();
@@ -204,10 +215,12 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             bLeaveSchool = true;
         }
         if (state.equals("arrived home")) {
-            logo = getResources().getDrawable(R.drawable.home_logo);
+            logo = getResources().getDrawable(R.drawable.arrive_home);
             if(!notified) {
                 Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.home_logo)
+                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                                R.drawable.home_logo))
                         .setContentTitle("Student Activity")
                         .setContentText(state)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -231,8 +244,9 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         textView.setCompoundDrawablePadding(50);
         textView.setText(studentName +" " + state + " : " + time);
         textView.setTextSize(20);
+        textView.setBackground(getResources().getDrawable(R.drawable.layout_border_bottom));
         textView.setGravity(Gravity.CENTER);
-        textView.setPadding(20,0,0,50);
+        textView.setPadding(20,30,0,30);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,15 +280,15 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         Date c = Calendar.getInstance().getTime();
         date = df.format(c);
         TextView textView = new TextView(this);
-        //date = "25-05-2020";
+        date = "25-05-2020";
 
         textView.setText(date);
         textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(50);
-        textView.setPadding(0,0,0,50);
+        textView.setTextSize(30);
+        textView.setPadding(0,50,0,20);
         notificationArea.addView(textView);
 
-        //date = "18-05-2020";
+        date = "18-05-2020";
         sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
         getNotification();
     }
@@ -317,6 +331,13 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             intent.putExtra("busId", busId);
             startActivity(intent);
 
+        }
+        if(v == profileButton){
+            Intent intent = new Intent(NotificationActivity.this,ProfileActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId.toString());
+            intent.putExtra("busId", busId);
+            startActivity(intent);
         }
     }
 

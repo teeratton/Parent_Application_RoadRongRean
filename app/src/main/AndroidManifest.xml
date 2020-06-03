@@ -31,11 +31,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.DEFAULT" />
-
-            </intent-filter>
+            android:label="@string/title_activity_maps"
+            android:theme="@style/NoActionBar">
         </activity>
         <activity android:name=".test">
 
@@ -46,32 +43,16 @@
         </activity>
         <activity android:name=".BusActivity">
 
-            <!-- Default Intent Filter -->
-            <intent-filter>
-                <action android:name="android.intent.action.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity android:name=".NotificationActivity">
-
-            <!-- Default Intent Filter -->
-            <intent-filter>
-                <action android:name="android.intent.action.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity android:name=".ScheduleActivity">
-
-            <!-- Default Intent Filter -->
-            <intent-filter>
-                <action android:name="android.intent.action.DEFAULT" />
-            </intent-filter>
+        <intent-filter>
+            <action android:name="android.intent.action.DEFAULT" />
+        </intent-filter>
         </activity>
 
         <activity android:name=".ProfileActivity">
-
-            <!-- Default Intent Filter -->
-            <intent-filter>
-                <action android:name="android.intent.action.DEFAULT" />
-            </intent-filter>
         </activity>
 
 
@@ -87,17 +68,22 @@
 
         <activity android:name=".PopMapActivity"
             android:theme="@style/AppTheme.CustomPopup"
-            ></activity>
+            >
+
+        </activity>
 
         <activity android:name=".PopSpeedWarningActivity"
-            android:theme="@style/AppTheme.CustomPopup"
-            ></activity>
+            android:theme="@style/AppTheme.CustomPopup">
+
+        </activity>
         <activity android:name=".PopSelectLocation"
-        android:theme="@style/AppTheme.CustomPopup"
-        ></activity>
+        android:theme="@style/AppTheme.CustomPopup">
+
+        </activity>
         <activity android:name=".PopSelectStudent"
-            android:theme="@style/AppTheme.CustomPopup"
-            ></activity>
+            android:theme="@style/AppTheme.CustomPopup">
+
+        </activity>
 
     </application>
 

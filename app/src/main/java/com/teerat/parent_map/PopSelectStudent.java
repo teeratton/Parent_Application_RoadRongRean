@@ -45,6 +45,12 @@ public class PopSelectStudent extends AppCompatActivity {
         setContentView(R.layout.pop_select_student);
         studentListArea = (LinearLayout) findViewById(R.id.studentListArea);
         okButton = (Button) findViewById(R.id.okButton);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopSelectStudent.super.onBackPressed();
+            }
+        });
 
         Intent intent = getIntent();
         parent = intent.getParcelableExtra("parent");

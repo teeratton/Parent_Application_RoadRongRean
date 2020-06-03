@@ -20,11 +20,19 @@
         android:layout_height="50dp"
         android:scaleType="fitCenter"
         android:paddingTop="20dp"
-        android:paddingRight="10dp"
+        android:paddingRight="0dp"
         android:background="@android:color/transparent"
         android:src="@drawable/to_bus_logo"
         android:layout_alignParentRight="true"
         android:text="to Bus" />
+
+    <TextView
+        android:id="@+id/speed_textView"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"/>
 
 
     <LinearLayout
@@ -32,25 +40,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/mapButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/colorYellow"
-            android:textSize="8sp"
+            android:src="@drawable/map_button"
+            android:scaleType="fitCenter"
+            android:textSize="10sp"
             android:text="Map" />
 
         <Button
             android:id="@+id/notificationButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/colorBlue"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:text="Notification" />
 
         <Button
@@ -59,7 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorBlue"
-            android:textSize="8sp"
+
+            android:textSize="10sp"
             android:text="Bus" />
 
         <Button
@@ -68,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorBlue"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:text="Schedule" />
 
         <Button
@@ -77,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorBlue"
-            android:textSize="8sp"
+            android:textSize="10sp"
             android:text="Profle" />
 
 

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Integer studentIdIndex;
     private Parent parent;
     private ImageButton goBusButton;
+    private TextView speedTextView;
     private CollectionReference busRef = FirebaseFirestore.getInstance().collection("bus");
     private CollectionReference studentRef = FirebaseFirestore.getInstance().collection("student");
     private DocumentReference bDocRef;
@@ -68,12 +70,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot.exists()) {
                     GeoPoint geo = documentSnapshot.getGeoPoint("location");
+                    Double speed = documentSnapshot.getDouble("speed");
+                    Integer speedInt = speed.intValue();
+
+                    speedTextView.setText(speedInt.toString() + " Km/h");
+
                     System.out.println(geo);
                     lat = geo.getLatitude();
                     lng = geo.getLongitude();
 
                     busGeo = new LatLng(lat, lng);
-                    homeGeo = new LatLng(13.73848225, 100.594068);
                     schoolGeo = new LatLng(13.9074539, 100.5014685);
 
                     mMap.clear();
@@ -101,6 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         scheduleButton = (Button) findViewById(R.id.scheduleButton);
         profileButton = (Button) findViewById(R.id.profileButton);
         goBusButton = (ImageButton) findViewById(R.id.go_to_bus_Button);
+        speedTextView = (TextView) findViewById(R.id.speed_textView);
         goBusButton.setOnClickListener(this);
         notificationButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
@@ -118,6 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ///Log.d("TAG", parent.getStudentList().toString());
 
         getID();
+        getLocation();
 
 
 
@@ -125,9 +133,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.getWindow().getDecorView().setSystemUiVisibility(
 
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -187,6 +193,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
+    }
+
+    private void getLocation(){
+        sDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if (documentSnapshot.exists()) {
+                    GeoPoint geo = documentSnapshot.getGeoPoint("GeoPoint");
+                    lat = geo.getLatitude();
+                    lng = geo.getLongitude();
+
+                    homeGeo = new LatLng(lat, lng);
+
+                } else if (e != null) {
+                    Log.w("fail", "Got an exception!", e);
+                }
+            }
+        });
     }
 
     @Override

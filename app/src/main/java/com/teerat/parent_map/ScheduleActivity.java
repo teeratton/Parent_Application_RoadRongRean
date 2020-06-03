@@ -1,5 +1,6 @@
 package com.teerat.parent_map;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     private Switch morning_switch;
     private Switch afternoon_switch;
     private Button notificationButton;
+    private Button profileButton;
     private Button busButton;
     private Button mapButton;
     private String date;
@@ -61,9 +63,11 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         notificationButton = (Button) findViewById(R.id.notificationButton);
         busButton = (Button) findViewById(R.id.busButton);
         mapButton = (Button) findViewById(R.id.mapButton);
+        profileButton = (Button) findViewById(R.id.profileButton);
         notificationButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         mapButton.setOnClickListener(this);
+        profileButton.setOnClickListener(this);
         Intent intent = getIntent();
         parent = intent.getParcelableExtra("parent");
         studentId = intent.getStringExtra("studentId");
@@ -159,6 +163,13 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             Intent intent = new Intent(ScheduleActivity.this,NotificationActivity.class);
             intent.putExtra("parent", parent);
             intent.putExtra("studentId", studentId);
+            intent.putExtra("busId", busId);
+            startActivity(intent);
+        }
+        if(v == profileButton){
+            Intent intent = new Intent(ScheduleActivity.this,ProfileActivity.class);
+            intent.putExtra("parent", parent);
+            intent.putExtra("studentId", studentId.toString());
             intent.putExtra("busId", busId);
             startActivity(intent);
         }
