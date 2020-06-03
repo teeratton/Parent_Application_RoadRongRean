@@ -77,7 +77,20 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         calendar_view.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                date = dayOfMonth + "-" + "0"+(month+1) + "-" + year;
+                String dateString = String.valueOf(dayOfMonth);
+                String monthString = String.valueOf(month+1);
+
+                if(String.valueOf(dayOfMonth).length() == 1){
+                     dateString = "0"+dayOfMonth;
+                    Log.d("dateString", dateString);
+
+                }
+                if(String.valueOf(month).length() == 1){
+                    monthString = "0"+(month+1);
+                    Log.d("monthString", monthString);
+                }
+                date = dateString + "-" + monthString + "-" + year;
+
                 Log.d("test", date);
                 date_textView.setText(date);
                 readData(date);

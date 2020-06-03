@@ -48,6 +48,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         studentImageView = (ImageView) findViewById(R.id.studentImage);
 
         selectLocationButton.setOnClickListener(this);
+        selectStudentButton.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
 
         studentImageView.setImageResource(R.drawable.korkeaw);
@@ -66,11 +67,14 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     public void onClick(View v) {
         if (v == selectLocationButton){
             Intent intent = new Intent(ProfileActivity.this,PopSelectLocation.class);
-            intent.putExtra("Parent",parent);
+            intent.putExtra("parent",parent);
             startActivity(intent);
         }
         if (v == selectStudentButton){
-
+            Intent intent = new Intent(ProfileActivity.this,PopSelectStudent.class);
+            intent.putExtra("parent",parent);
+            intent.putExtra("studentId",studentId);
+            startActivity(intent);
         }
         if (v == logoutButton){
             Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);

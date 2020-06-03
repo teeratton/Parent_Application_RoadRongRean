@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -51,7 +52,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button busButton;
     private Button scheduleButton;
     private Button profileButton;
-    private String studentId;
+    private Integer studentId;
+    private Integer studentIdIndex;
     private Parent parent;
     private ImageButton goBusButton;
     private CollectionReference busRef = FirebaseFirestore.getInstance().collection("bus");
@@ -106,6 +108,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         profileButton.setOnClickListener(this);
         Intent intent = getIntent();
         parent = intent.getParcelableExtra("parent");
+        studentIdIndex = intent.getIntExtra("index",0);
+        studentId = PrefConfig.loadIdFromPref(this);
+        Log.d("studentIdIedex", studentIdIndex.toString());
+
+
+
+
         ///Log.d("TAG", parent.getStudentList().toString());
 
         getID();
@@ -153,11 +162,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void getID(){
         Log.d("TAG", parent.getFirstName());
+        if(studentId == 0){
+            studentId = parent.getStudentList().get(0);
+        }
 
-        studentId = Integer.toString(parent.getStudentList().get(0));
-        Log.d("TAG", studentId);
 
-        sDocRef = studentRef.document(studentId);
+        Log.d("TAG", studentId.toString());
+
+        sDocRef = studentRef.document(studentId.toString());
         sDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
@@ -182,7 +194,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(v == notificationButton){
             Intent intent = new Intent(MapsActivity.this,NotificationActivity.class);
             intent.putExtra("parent", parent);
-            intent.putExtra("studentId", studentId);
+            intent.putExtra("studentId", studentId.toString());
             intent.putExtra("busId", busId);
             startActivity(intent);
         }
@@ -190,20 +202,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Intent intent = new Intent(MapsActivity.this,BusActivity.class);
             intent.putExtra("parent", parent);
             intent.putExtra("busId", busId);
-            intent.putExtra("studentId", studentId);
+            intent.putExtra("studentId", studentId.toString());
             startActivity(intent);
         }
         if(v == scheduleButton){
             Intent intent = new Intent(MapsActivity.this,ScheduleActivity.class);
             intent.putExtra("parent", parent);
-            intent.putExtra("studentId", studentId);
+            intent.putExtra("studentId", studentId.toString());
             intent.putExtra("busId", busId);
             startActivity(intent);
         }
         if(v == profileButton){
             Intent intent = new Intent(MapsActivity.this,ProfileActivity.class);
             intent.putExtra("parent", parent);
-            intent.putExtra("studentId", studentId);
+            intent.putExtra("studentId", studentId.toString());
             intent.putExtra("busId", busId);
             startActivity(intent);
         }
