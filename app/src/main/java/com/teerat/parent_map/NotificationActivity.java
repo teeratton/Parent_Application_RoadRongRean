@@ -1,5 +1,7 @@
 package com.teerat.parent_map;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +35,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.teerat.parent_map.App.CHANNEL_1_ID;
 
 public class NotificationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -56,6 +62,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     private String date;
     private Drawable logo;
     private String studentName = "";
+    private NotificationManagerCompat notificationManager;
 
     protected void getNotification() {
         Log.w("test", "2");
@@ -72,8 +79,9 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         Map<String, Object> leaveHome = (java.util.Map<String, Object>) t.get("LEAVEHOME");
                         leaveHomeLocation = (GeoPoint) leaveHome.get("LOCATION");
                         time = (String) leaveHome.get("TIME");
+                        Boolean notified = (Boolean) leaveHome.get("NOTIFIED");
                         if (!bLeaveHome) {
-                            updateNotification("leave the home", time, leaveHomeLocation);
+                            updateNotification("leave the home", time, leaveHomeLocation,notified);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
@@ -82,8 +90,9 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         Map<String, Object> arriveSchool = (java.util.Map<String, Object>) t.get("ARRIVESCHOOL");
                         arriveSchoolLocation = (GeoPoint) arriveSchool.get("LOCATION");
                         time = (String) arriveSchool.get("TIME");
+                        Boolean notified = (Boolean) arriveSchool.get("NOTIFIED");
                         if (!bArriveSchool) {
-                            updateNotification("arrive at school", time, arriveSchoolLocation);
+                            updateNotification("arrive at school", time, arriveSchoolLocation,notified);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
@@ -92,8 +101,9 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         Map<String, Object> leaveSchool = (java.util.Map<String, Object>) t.get("LEAVESCHOOL");
                         leaveSchoolLocation = (GeoPoint) leaveSchool.get("LOCATION");
                         time = (String) leaveSchool.get("TIME");
+                        Boolean notified = (Boolean) leaveSchool.get("NOTIFIED");
                         if (!bLeaveSchool) {
-                            updateNotification("leave the school", time, leaveSchoolLocation);
+                            updateNotification("leave the school", time, leaveSchoolLocation,notified);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
@@ -102,8 +112,10 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         Map<String, Object> arriveHome = (java.util.Map<String, Object>) t.get("ARRIVEHOME");
                         arriveHomeLocation = (GeoPoint) arriveHome.get("LOCATION");
                         time = (String) arriveHome.get("TIME");
+                        Boolean notified = (Boolean) arriveHome.get("NOTIFIED");
+
                         if (!bArriveHome) {
-                            updateNotification("arrived home", time, arriveHomeLocation);
+                            updateNotification("arrived home", time, arriveHomeLocation,notified);
                         }
                     } catch (Exception a) {
                         System.out.println("S");
@@ -134,27 +146,77 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         parent = intent.getParcelableExtra("parent");
         studentId = intent.getStringExtra("studentId");
         busId = intent.getStringExtra("busId");
+        notificationManager = NotificationManagerCompat.from(this);
 
         getStudentName();
         getDate();
 
     }
 
-    private void updateNotification(String state, String time, final GeoPoint location) {
+    private void updateNotification(String state, String time, final GeoPoint location,Boolean notified) {
+
         if (state.equals("leave the home")) {
             logo = getResources().getDrawable(R.drawable.leave_home_or_school);
+            if(!notified) {
+                Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                        .setSmallIcon(R.drawable.leave_home_or_school)
+                        .setContentTitle("Student Activity")
+                        .setContentText(state)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .build();
+
+                notificationManager.notify(1, notification);
+                sDocRef.update("LEAVEHOME.NOTIFIED",true);
+            }
             bLeaveHome = true;
         }
         if (state.equals("arrive at school")) {
             logo = getResources().getDrawable(R.drawable.school_logo);
+            if(!notified) {
+                Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                        .setSmallIcon(R.drawable.school_logo)
+                        .setContentTitle("Student Activity")
+                        .setContentText(state)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .build();
+
+                notificationManager.notify(1, notification);
+                sDocRef.update("ARRIVESCHOOL.NOTIFIED",true);
+            }
             bArriveSchool = true;
         }
         if (state.equals("leave the school")) {
             logo = getResources().getDrawable(R.drawable.leave_home_or_school);
+            if(!notified) {
+                Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                        .setSmallIcon(R.drawable.leave_home_or_school)
+                        .setContentTitle("Student Activity")
+                        .setContentText(state)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .build();
+
+                notificationManager.notify(1, notification);
+                sDocRef.update("LEAVESCHOOL.NOTIFIED",true);
+            }
             bLeaveSchool = true;
         }
         if (state.equals("arrived home")) {
             logo = getResources().getDrawable(R.drawable.home_logo);
+            if(!notified) {
+                Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                        .setSmallIcon(R.drawable.home_logo)
+                        .setContentTitle("Student Activity")
+                        .setContentText(state)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .build();
+
+                notificationManager.notify(1, notification);
+                sDocRef.update("ARRIVEHOME.NOTIFIED",true);
+            }
             bArriveHome = true;
         }
 
@@ -204,7 +266,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         Date c = Calendar.getInstance().getTime();
         date = df.format(c);
         TextView textView = new TextView(this);
-        date = "25-05-2020";
+        //date = "25-05-2020";
 
         textView.setText(date);
         textView.setGravity(Gravity.CENTER);
@@ -212,7 +274,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         textView.setPadding(0,0,0,50);
         notificationArea.addView(textView);
 
-        date = "18-05-2020";
+        //date = "18-05-2020";
         sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
         getNotification();
     }
