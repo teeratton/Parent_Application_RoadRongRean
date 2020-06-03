@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.Image;
@@ -17,10 +19,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -38,6 +43,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String studentId;
     private String studentFirstName;
     private String studentLastName;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference imageRef;
 
 
 
@@ -66,12 +73,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         selectStudentButton.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
 
-        studentImageView.setImageResource(R.drawable.korkeaw);
+        //studentImageView.setImageResource(R.drawable.korkeaw);
 
         Intent intent = getIntent();
         parent = intent.getParcelableExtra("parent");
         busId = intent.getStringExtra("busId");
         studentId = intent.getStringExtra("studentId");
+        getImage();
         getStudentInfo();
 
 
@@ -146,7 +154,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    private void getImage(){
+        try {
+            imageRef = storage.getReference().child("test").child(studentId+".png");
+            imageRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                    studentImageView.setImageBitmap(bitmap);
+                }
+            });
+        }catch (Exception a) {
+            System.out.println("S");
+        }
 
-
+    }
 
 }
