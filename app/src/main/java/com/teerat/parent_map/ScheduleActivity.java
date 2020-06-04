@@ -57,6 +57,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         calendar_view = (CalendarView) findViewById(R.id.calendar);
+        calendar_view.setMinDate(System.currentTimeMillis());
         date_textView = (TextView) findViewById(R.id.dateTextView);
         morning_switch = (Switch) findViewById(R.id.morningSwitch);
         afternoon_switch = (Switch) findViewById(R.id.afternoonSwitch);

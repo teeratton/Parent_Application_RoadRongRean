@@ -3,6 +3,7 @@ package com.teerat.parent_map;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -160,6 +161,15 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
 
     private void updateNotification(String state, String time, final GeoPoint location,Boolean notified) {
 
+        Intent notifyIntent = new Intent(this, NotificationActivity.class);
+        notifyIntent.putExtra("parent", parent);
+        notifyIntent.putExtra("studentId", studentId.toString());
+        notifyIntent.putExtra("busId", busId);
+
+        PendingIntent notifyPendingIntent = PendingIntent.getActivity(
+                this, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
         if (state.equals("leave the home")) {
             logo = getResources().getDrawable(R.drawable.get_on_off_bus);
             if(!notified) {
@@ -169,6 +179,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         .setContentText(state)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .setContentIntent(notifyPendingIntent)
                         .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
                                 R.drawable.leave_home_or_school))
                         .build();
@@ -188,6 +199,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         .setContentTitle("Student Activity")
                         .setContentText(state)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(notifyPendingIntent)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                         .build();
 
@@ -206,6 +218,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
                                 R.drawable.leave_home_or_school))
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(notifyPendingIntent)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                         .build();
 
@@ -224,6 +237,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                         .setContentTitle("Student Activity")
                         .setContentText(state)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(notifyPendingIntent)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                         .build();
 
@@ -280,7 +294,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         Date c = Calendar.getInstance().getTime();
         date = df.format(c);
         TextView textView = new TextView(this);
-        date = "25-05-2020";
+        //date = "25-05-2020";
 
         textView.setText(date);
         textView.setGravity(Gravity.CENTER);
@@ -288,7 +302,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         textView.setPadding(0,50,0,20);
         notificationArea.addView(textView);
 
-        date = "18-05-2020";
+        //date = "18-05-2020";
         sDocRef = FirebaseFirestore.getInstance().document("student/"+studentId+"/Event/" + date);
         getNotification();
     }
@@ -325,7 +339,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             startActivity(intent);
         }
         if(v == speedWarningButton){
-            date = "30-05-2020";
+            //date = "30-05-2020";
             Intent intent = new Intent(NotificationActivity.this,PopSpeedWarningActivity.class);
             intent.putExtra("date", date);
             intent.putExtra("busId", busId);

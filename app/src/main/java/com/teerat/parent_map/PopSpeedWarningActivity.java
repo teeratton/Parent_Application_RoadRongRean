@@ -59,18 +59,18 @@ public class PopSpeedWarningActivity extends AppCompatActivity {
     }
 
     private void speedWarning() {
-        DocumentReference bDocRef = FirebaseFirestore.getInstance().document("bus/" + busId + "/speedWarning/" + date);
+        DocumentReference bDocRef = FirebaseFirestore.getInstance().document("bus/" + busId + "/SpeedWarning/" + date);
         Log.d("speed warning", "bus/" + busId + "/speedWarning/" + date);
 
         bDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot document = task.getResult();
-                speedWarningList = (List<Map<String, Object>>) document.get("speedWarningList");
+                speedWarningList = (List<Map<String, Object>>) document.get("SpeedWarningList");
 
                 for (int i = 0; i < speedWarningList.size(); i++) {
-                    String time = (String)speedWarningList.get(i).get("time");
-                    String speed = speedWarningList.get(i).get("speed").toString();
+                    String time = (String)speedWarningList.get(i).get("Timestamp");
+                    Double speed = (Double) speedWarningList.get(i).get("Speed");
                     TextView textView = new TextView(PopSpeedWarningActivity.this);
                     logo = getResources().getDrawable(R.drawable.speed_warning_logo);
                     logo = resize(logo);
@@ -79,7 +79,8 @@ public class PopSpeedWarningActivity extends AppCompatActivity {
                     logo.setBounds( 0, 0, w, h );
                     textView.setCompoundDrawables(logo,null,null,null);
                     textView.setCompoundDrawablePadding(50);
-                    textView.setText(speed + "Km at " +time);
+                    Integer speedInt = speed.intValue();
+                    textView.setText(speedInt + "Km/h at " +time);
                     textView.setTextSize(25);
                     textView.setGravity(Gravity.CENTER);
                     textView.setPadding(20,0,0,50);
